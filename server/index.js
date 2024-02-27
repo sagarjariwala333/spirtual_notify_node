@@ -62,6 +62,10 @@ app.get("/comments", (req, res) => {
     });
 });
 
+app.get("/index", (req, res) => {
+  res.send('Hello World')
+})
+
 app.post("/comments", async (req, res) => {
   // Create a new comment in the database
   const comment = req.body;

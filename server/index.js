@@ -14,11 +14,14 @@ const io =  require("socket.io")(http, {
   },
 });
 import * as dbOperations from './dbConnection.js';
-
+import authenticate from './middlewares/authenticate.middleware.js';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Authentication middleware
+app.use(authenticate);
 
 // app.use("/users", usersRouter);
 app.use("/users", usersRouter(io));

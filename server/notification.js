@@ -7,7 +7,6 @@ const notificationRouter = (io) => {
   // Create a new user
 
   router.post("/like", async (req, res) => {
-    console.log(req.body.postId);
     // get post reaction
     const query = `SELECT t2.connectionId FROM Reaction t1
     join OnlineUsers t2 on t1.UserId = t2.UserId  
@@ -22,7 +21,7 @@ const notificationRouter = (io) => {
     connectionIds.map((item)=>{
       io.to(item.connectionId).emit('likepost', req.body );
     })
-    res.json(connectionIds);
+    return res.status(200).json(connectionIds);
   });
 
   router.post("/newmessage", async (req, res) => {

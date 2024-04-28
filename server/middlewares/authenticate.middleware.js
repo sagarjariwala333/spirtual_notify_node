@@ -17,7 +17,7 @@ const getUserById = async (id) => {
 const authenticate = async (req, res, next) => {
     try {
         const token = req?.headers['authorization']
-        
+
         if(!token) {
             return res.status(401).json({ messsage: 'Token not found'});
         }
@@ -38,6 +38,8 @@ const authenticate = async (req, res, next) => {
         if (!(decoded && decoded.exp && decoded.exp > currentTimestamp)) {
             return res.status(401).json({message: 'Token expired'})
         }
+
+        next();
         // console.log(jwtToken)
         // jwt.verify(jwtToken,'drivematesecretkeyJWTServiceAccessToken123', 
         //     {
@@ -45,8 +47,7 @@ const authenticate = async (req, res, next) => {
         //     })
     }
     catch(err) {
-        console.error(err)
-        next();
+        return res.status(501).json({message: 'Something went wrong'})
     }
 }
 

@@ -8,7 +8,10 @@ const getUserById = async (id) => {
         const userId = id;
         const query = `SELECT * FROM users WHERE Id = ${userId}`; // Adjust the query based on your database schema
         const user = await dbOperations.executeQuery(query);
-        return user;  
+        if(user?.length > 0){
+            return user[0];
+        }
+        return user;
       } catch (error) {
         throw new Error(error);
       }
@@ -23,8 +26,9 @@ const authenticate = async (req, res, next) => {
         }
         const jwtToken = token.split(' ')[1].trim();
         const decoded = jwt.decode(jwtToken);
+        console.log(decoded);
         const user = await getUserById(decoded.Id);
-        
+        console.log(user);
         if(!user || user.IsDeleted) {
             return res.status(401).json({message: 'User not found'})
         }

@@ -37,51 +37,6 @@ io.on("connection", (socket) => {
   });
 });
 
-// Routes
-app.get("/users", (req, res) => {
-  // Execute database query and return results
-  const usersQuery = 'SELECT * FROM YourUsersTable';
-  dbOperations.executeQuery(usersQuery)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
-});
-
-app.get("/comments", (req, res) => {
-  // Emit event to a specific socket
-  io.to("q7DJFY0eeQ0BQieMAAAH").emit('new-comment', { comment: 'some comment' });
-
-  // Retrieve and return comments from the database
-  const commentsQuery = 'SELECT * FROM YourCommentsTable';
-  dbOperations.executeQuery(commentsQuery)
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((error) => {
-      res.status(500).json({ error: 'Internal Server Error' });
-    });
-});
-
-app.get("/index", (req, res) => {
-  res.send('Hello World')
-})
-
-app.post("/comments", async (req, res) => {
-  // Create a new comment in the database
-  const comment = req.body;
-  const insertQuery = `INSERT INTO YourCommentsTable (Column1, Column2) VALUES ('${comment.value1}', '${comment.value2}')`;
-  
-  try {
-    await dbOperations.executeQuery(insertQuery);
-    res.json({ success: true, message: 'Comment added successfully' });
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 // Start the server
 http.listen(PORT, async () => {
   await dbOperations.connectToDatabase();

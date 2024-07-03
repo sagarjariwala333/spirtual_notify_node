@@ -44,7 +44,7 @@ const notificationRouter = (io) => {
     console.log(req.body.postId);
     console.log(req.body);
     // get post reaction
-      const query = `SELECT n.ActionType,ou.connectionId,aud.Id As ActionUserId, CONCAT(aud.firstName, ' ', aud.lastName) AS ActionFullName,
+      const query = `SELECT n.ActionType,n.Message,ou.connectionId,aud.Id As ActionUserId, CONCAT(aud.firstName, ' ', aud.lastName) AS ActionFullName,
       ud.Id As UserId, CONCAT(ud.firstName, ' ', ud.lastName) AS FullName
       FROM notification AS n
       JOIN userNotification AS un ON n.Id = un.NotificationId
